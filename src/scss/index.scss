@@ -1,0 +1,128 @@
+@use "colors" as *;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply duration-200;
+}
+
+body {
+  font-family: "Josefin Sans", sans-serif;
+  background-color: $bg-light-color;
+  overflow-x: hidden;
+}
+
+.head {
+  h1 {
+    color: #f7f8fd;
+  }
+}
+
+.body {
+  color: $text-light-color;
+
+  .newTask,
+  .tasks,
+  .foot {
+    background-color: $task-light-color;
+  }
+
+  .miniTask {
+    &:not(:last-child) {
+      border-bottom: 1px solid adjust-color($color: $task-light-color, $blackness: 10%);
+    }
+
+    .editIcons,
+    .updateIcons {
+      &>* {
+        @apply hover:scale-110;
+      }
+    }
+
+    &:hover {
+      .editIcons {
+        @apply opacity-100;
+      }
+    }
+  }
+
+  .check {
+    border: 1px solid $text-secondary-dark-color;
+
+    .gradient {
+      background-image: $gradient;
+    }
+  }
+
+  .emptyMessage,
+  .itemsLeft {
+    color: $text-light-color;
+  }
+
+  .itemsLeft span {
+    @apply font-bold;
+    color: $complete-color;
+  }
+}
+
+.foot {
+  border-top: 1px solid adjust-color($color: $task-light-color, $blackness: 10%);
+
+  .itemsLeft,
+  .clear {
+    @apply text-xs;
+    color: $text-light-color;
+  }
+
+  .clear {
+    @apply cursor-pointer;
+
+    &:hover {
+      color: $complete-color;
+    }
+  }
+}
+
+
+body.dark {
+  background-color: $bg-dark-color;
+
+  .body {
+    color: $text-primary-dark-color;
+
+    .newTask,
+    .tasks {
+      box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.75);
+    }
+
+    .newTask,
+    .tasks,
+    .foot {
+      background-color: $task-dark-color;
+    }
+
+    .miniTask:not(:last-child) {
+      border-bottom: 1px solid adjust-color($color: $task-dark-color, $lightness: 5%);
+    }
+
+    .check {
+      border: 1px solid $text-light-color;
+    }
+
+    .emptyMessage,
+    .itemsLeft {
+      color: $text-secondary-dark-color;
+    }
+  }
+
+  .foot {
+    border-top: 1px solid adjust-color($color: $task-dark-color, $lightness: 5%);
+
+    .itemsLeft,
+    .clear {
+      color: $text-secondary-dark-color;
+    }
+  }
+}
