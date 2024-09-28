@@ -14,7 +14,7 @@ It uses Supabase as its backend. Supabase is an open-source alternative to Fireb
 
 Todo is built using the following technologies:
 
-[![My Skills](https://skillicons.dev/icons?i=html,sass,ts,react,supabase)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=html,sass,tailwind,ts,react,supabase)](https://skillicons.dev)
 
 ## Installation
 
