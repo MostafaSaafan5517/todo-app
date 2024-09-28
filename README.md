@@ -1,4 +1,4 @@
-# Todo App <img src="./public/favicon.ico" width="30px" height="30px" alt="">
+# <img src="./public/favicon.ico" width="30px" height="30px" alt=""> Todo App
 
 <img src="./public/screenshot.png" width="100%" alt="" />
 
