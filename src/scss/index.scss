@@ -76,12 +76,8 @@ body {
     color: $text-light-color;
   }
 
-  .clear {
-    @apply cursor-pointer;
-
-    &:hover {
-      color: $complete-color;
-    }
+  .clear:hover {
+    color: $complete-color;
   }
 }
 
@@ -123,6 +119,10 @@ body.dark {
     .itemsLeft,
     .clear {
       color: $text-secondary-dark-color;
+    }
+
+    .clear:hover {
+      color: $complete-color;
     }
   }
 }

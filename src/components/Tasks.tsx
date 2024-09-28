@@ -77,7 +77,10 @@ function Tasks() {
           <span>{uncompletedTasks}</span> items left
         </p>
 
-        <div className="clear font-semibold" onClick={clearCompleted}>
+        <div
+          className="clear font-semibold cursor-pointer"
+          onClick={clearCompleted}
+        >
           Clear Completed
         </div>
       </div>
