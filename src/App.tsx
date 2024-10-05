@@ -3,20 +3,19 @@ import bgLight from "./assets/bg-desktop-light.jpg";
 import bgDark from "./assets/bg-desktop-dark.jpg";
 import Todos from "./components/Todos";
 
+import { useSelector } from "react-redux";
+
 function App() {
-  const changeBackground = (theme: string) => {
-    const bg = document.querySelector(".bg") as HTMLImageElement;
-    if (theme === "light") {
-      bg.src = bgLight;
-    } else {
-      bg.src = bgDark;
-    }
-  };
+  const theme = useSelector((state: any) => state.theme);
 
   return (
     <div className="App w-screen h-screen relative">
-      <img src={bgLight} alt="" className="bg w-full h-52" />
-      <Todos changeBackground={changeBackground} />
+      <img
+        src={theme === "dark" ? bgDark : bgLight}
+        alt=""
+        className="bg w-full h-52"
+      />
+      <Todos />
     </div>
   );
 }

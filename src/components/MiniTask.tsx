@@ -5,37 +5,32 @@ import { MdDelete as Delete } from "react-icons/md";
 import { HiMiniPencilSquare as Edit } from "react-icons/hi2";
 import checkIcon from "../assets/icons/icon-check.svg";
 
+import { useDispatch } from "react-redux";
+import { deleteTask, editTask } from "../store/slices/tasksSlice";
+
 interface Props {
   id?: number;
   content: string;
   completed: boolean;
-  fetchAgain: Function;
 }
 
-function MiniTask({ id, content, completed, fetchAgain }: Props) {
-  const [check, setCheck] = useState(completed);
-  const [currentlyUpdated, setCurrentlyUpdated] = useState(false);
+function MiniTask({ id, content, completed }: Props) {
+  const dispatch = useDispatch();
 
-  const handleClick = async (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    setCheck(!check);
-    fetchAgain();
-  };
+  const [check, setCheck] = useState(completed);
+  const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
   const setUpdate = async (value: string) => {
-    setCurrentlyUpdated(false);
     await supabase.from("tasks").update({ content: value }).eq("id", id);
 
-    fetchAgain();
+    setCurrentlyEditing(false);
+    dispatch(editTask({ id, content: value }));
   };
 
-  const handleDelete = async (
-    event: React.MouseEvent<SVGElement, MouseEvent>
-  ) => {
+  const handleDelete = async () => {
     await supabase.from("tasks").delete().eq("id", id);
 
-    fetchAgain();
+    dispatch(deleteTask(id));
   };
 
   useEffect(() => {
@@ -44,7 +39,6 @@ function MiniTask({ id, content, completed, fetchAgain }: Props) {
     };
 
     updateCompleted();
-    fetchAgain();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [check, id]);
@@ -53,15 +47,15 @@ function MiniTask({ id, content, completed, fetchAgain }: Props) {
     <section
       className={
         "task miniTask relative " +
-        (currentlyUpdated ? "px-7 py-6" : "mx-2 px-2 py-3")
+        (currentlyEditing ? "px-7 py-6" : "mx-2 px-2 py-3")
       }
     >
       <div
         className={
           "check w-5 h-5 rounded-full cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 " +
-          (currentlyUpdated ? "pointer-events-none opacity-50" : "")
+          (currentlyEditing ? "pointer-events-none opacity-50" : "")
         }
-        onClick={handleClick}
+        onClick={() => setCheck(!check)}
       >
         {check && (
           <>
@@ -75,11 +69,11 @@ function MiniTask({ id, content, completed, fetchAgain }: Props) {
         )}
       </div>
 
-      {currentlyUpdated ? (
+      {currentlyEditing ? (
         <UpdateTask
           className="justify-start"
           content={content}
-          closeUpdate={() => setCurrentlyUpdated(false)}
+          closeUpdate={() => setCurrentlyEditing(false)}
           setUpdate={setUpdate}
         />
       ) : (
@@ -93,11 +87,11 @@ function MiniTask({ id, content, completed, fetchAgain }: Props) {
         </p>
       )}
 
-      {!currentlyUpdated && (
+      {!currentlyEditing && (
         <div className="editIcons opacity-0 flex items-center gap-x-1 absolute right-0 top-1/2 -translate-y-1/2 *:text-xl *:cursor-pointer">
           <Edit
             className="fill-sky-600"
-            onClick={() => setCurrentlyUpdated(true)}
+            onClick={() => setCurrentlyEditing(true)}
           />
           <Delete className="fill-red-700" onClick={handleDelete} />
         </div>

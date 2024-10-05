@@ -1,23 +1,17 @@
-import { useState } from "react";
 import supabase from "../config/supabaseClient";
-import { FaSquarePen } from "react-icons/fa6";
 import checkIcon from "../assets/icons/icon-check.svg";
+import { FaSquarePen } from "react-icons/fa6";
 
-interface Props {
-  fetchAgain: Function;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { setCheck, setInputValue } from "../store/slices/newTaskSlice";
+import { addNewTask } from "../store/slices/tasksSlice";
 
-function NewTask({ fetchAgain }: Props) {
-  const [check, setCheck] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+function NewTask() {
+  const dispatch = useDispatch();
+  const check = useSelector((state: any) => state.newTask.check);
+  const inputValue = useSelector((state: any) => state.newTask.inputValue);
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setCheck(!check);
-  };
-
-  const handleSubmit = async (
-    event?: React.MouseEvent<SVGElement, MouseEvent>
-  ) => {
+  const handleSubmit = async () => {
     if (inputValue === "" || inputValue === " ") return;
 
     const { error } = await supabase.from("tasks").insert({
@@ -29,16 +23,16 @@ function NewTask({ fetchAgain }: Props) {
       console.log(error);
     }
 
-    setInputValue("");
-    setCheck(false);
-    fetchAgain();
+    dispatch(addNewTask({ content: inputValue, completed: check }));
+    dispatch(setInputValue(""));
+    dispatch(setCheck(false));
   };
 
   return (
     <section className="newTask flex items-center justify-evenly px-4 py-1 rounded relative">
       <div
         className="check w-5 h-5 rounded-full cursor-pointer absolute left-4 top-1/2 -translate-y-1/2"
-        onClick={handleClick}
+        onClick={() => dispatch(setCheck(!check))}
       >
         {check && (
           <>
@@ -58,7 +52,7 @@ function NewTask({ fetchAgain }: Props) {
         autoFocus
         name="newTask"
         className="w-full bg-transparent outline-none py-3 ps-8 pe-4 rounded"
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => dispatch(setInputValue(e.target.value))}
         onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
       />
       <FaSquarePen

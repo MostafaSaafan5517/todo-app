@@ -12,6 +12,11 @@ interface Props {
 function UpdateTask({ content, closeUpdate, setUpdate }: Props) {
   const [inputValue, setInputValue] = useState(content);
 
+  const callSetUpdate = (value: string) => {
+    if (inputValue === "" || inputValue === " ") return;
+    setUpdate(value);
+  };
+
   return (
     <section className="flex items-center gap-x-5">
       <input
@@ -21,13 +26,13 @@ function UpdateTask({ content, closeUpdate, setUpdate }: Props) {
         autoFocus
         className="w-full bg-transparent outline-none ps-8"
         onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && setUpdate(inputValue)}
+        onKeyDown={(e) => e.key === "Enter" && callSetUpdate(inputValue)}
       />
 
       <div className="updateIcons *:cursor-pointer *:w-6 *:h-6 flex items-center gap-x-1">
         <FaSquarePen
           className="fill-sky-600 *:pointer-events-none"
-          onClick={() => setUpdate(inputValue)}
+          onClick={() => callSetUpdate(inputValue)}
         />
 
         <Close className="text-red-700" onClick={() => closeUpdate()} />

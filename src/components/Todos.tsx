@@ -3,7 +3,12 @@ import Tasks from "./Tasks";
 import sunIcon from "../assets/icons/icon-sun.svg";
 import moonIcon from "../assets/icons/icon-moon.svg";
 
-function Todos({ changeBackground }: { changeBackground: Function }) {
+import { useDispatch } from "react-redux";
+import { changeTheme } from "../store/slices/themeSlice";
+
+function Todos() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const themeToggle = document.querySelector(
       ".themeToggle"
@@ -20,23 +25,19 @@ function Todos({ changeBackground }: { changeBackground: Function }) {
     event: React.MouseEvent<HTMLImageElement, MouseEvent>
   ) => {
     const target = event.target as HTMLImageElement;
-    if (target.alt === "light theme") {
+    if (target.alt === "light") {
       target.src = sunIcon;
-      target.alt = "dark theme";
+      target.alt = "dark";
     } else {
       target.src = moonIcon;
-      target.alt = "light theme";
+      target.alt = "light";
     }
 
     localStorage.setItem("theme", target.alt);
 
     document.body.classList.toggle("dark");
 
-    if (document.body.classList.contains("dark")) {
-      changeBackground("dark");
-    } else {
-      changeBackground("light");
-    }
+    dispatch(changeTheme(target.alt));
   };
 
   return (
@@ -45,7 +46,7 @@ function Todos({ changeBackground }: { changeBackground: Function }) {
         <h1 className="text-3xl font-bold">T O D O</h1>
         <img
           src={moonIcon}
-          alt="light theme"
+          alt="light"
           onClick={handleClick}
           className="themeToggle cursor-pointer"
         />
